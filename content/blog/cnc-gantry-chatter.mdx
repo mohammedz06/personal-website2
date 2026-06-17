@@ -1,0 +1,29 @@
+---
+title: "Designing for Chatter: Lessons from a CNC Gantry Redesign"
+date: "2025-01-28"
+excerpt: "How modal analysis and a few structural changes cut vibration during aluminum roughing — without adding mass."
+image: "/images/blog/cnc.svg"
+---
+
+Chatter is the sound of money leaving your tool life budget. When our university's CNC gantry started producing visibly rough surfaces at feed rates above 800 mm/min, we had to decide: buy a stiffer machine, or understand why this one wasn't stiff enough.
+
+## Finding the Mode
+
+Modal FEA on the existing frame showed a bending mode at 47 Hz in the Y-axis cross member — right in the range where our spindle speed and flute count produced excitation.
+
+The problem wasn't the rails. It was the **span between bearing blocks** combined with a flat cross-section that flexed torsionally under cutting forces.
+
+## The Fix
+
+We added triangular ribbing to the cross member and relocated the rail mounting surface 12 mm closer to the centroid. Total added mass: 340 g. No changes to the drive system or spindle.
+
+![Cross member redesign](/images/blog/cnc-detail.svg)
+
+Prototype cuts on 6061-T6 showed:
+
+- Surface roughness (Ra) improved from 3.2 µm to 1.9 µm at the same feed rate
+- We could push feed to 1100 mm/min before chatter returned
+
+## What I'd Do Differently
+
+Run FEA earlier in the design process. The original frame was built for speed of assembly, not stiffness per kilogram. Stiffness should be a first-class requirement, not a retrofit.

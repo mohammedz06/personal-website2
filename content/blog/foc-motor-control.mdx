@@ -1,0 +1,34 @@
+---
+title: "Field-Oriented Control on a Budget MCU"
+date: "2024-11-05"
+excerpt: "Running 20 kHz FOC on an STM32F4 with current sensing, over-current protection, and a web-based tuning interface."
+image: "/images/blog/foc.svg"
+---
+
+Field-oriented control sounds intimidating until you implement it once. The math is clean; the hard part is making the loop run fast enough and keeping the hardware safe when things go wrong.
+
+## Architecture
+
+The firmware splits into three layers:
+
+- **Fast loop (20 kHz):** Clarke/Park transforms, PI current controllers, SVPWM output
+- **Slow loop (1 kHz):** Speed controller, flux weakening, temperature monitoring
+- **Communication (async):** CAN telemetry and USB command interface
+
+The fast loop runs in a TIM-triggered ISR with deterministic timing. Everything else is preemptable.
+
+## Current Sensing
+
+We used two shunt resistors on the low-side FETs with op-amp amplification. Calibration was straightforward — apply known current, measure ADC offset and gain. The trickier part was **synchronizing ADC reads with the PWM center** to avoid switching noise.
+
+## Web Tuning Interface
+
+Using the Web Serial API, we built a minimal tuning UI that plots phase current waveforms in real time. No desktop app, no firmware reflash for gain changes during bench testing.
+
+![FOC tuning interface](/images/blog/foc-detail.svg)
+
+## Lessons
+
+- Start with open-loop spin before closing the current loop
+- Over-current trip must be hardware-backed, not just firmware
+- Log fault codes with timestamp and motor state — debugging without logs is guessing

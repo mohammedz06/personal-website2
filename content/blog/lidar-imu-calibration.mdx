@@ -1,0 +1,35 @@
+---
+title: "Calibrating a LiDAR–IMU System from Scratch"
+date: "2025-03-12"
+excerpt: "A practical walkthrough of extrinsic calibration between a 2D LiDAR and IMU — the mistakes, the math, and what actually mattered."
+image: "/images/blog/calibration.svg"
+---
+
+Getting sensor fusion to work starts long before you write a single line of SLAM code. The extrinsic transform between your LiDAR and IMU has to be right — not approximately right, but measured and verified.
+
+## The Setup
+
+Our test platform uses a Hokuyo UST-10LX mounted 15 cm above the IMU center. The rotation offset was unknown within a few degrees, which is enough to break scan matching in tight corridors.
+
+## Calibration Procedure
+
+We used a hand-eye calibration approach:
+
+1. Mount the robot on a turntable with known angular increments
+2. Record synchronized LiDAR scans and IMU orientations at each position
+3. Solve for the rotation matrix using SVD on the correspondence pairs
+4. Validate by comparing predicted scan overlap against ground truth
+
+The key insight was that **translational offset matters less than rotational alignment** for 2D LiDAR at our mounting height. We spent two days on translation refinement that moved our localization error by less than 2 mm.
+
+## Results
+
+After calibration, loop closure error dropped from 8% to under 1.5% on our standard test course. The full procedure is documented in our lab wiki.
+
+![Calibration setup diagram](/images/blog/calibration-detail.svg)
+
+## Takeaways
+
+- Measure rotation first, refine translation only if residuals are large
+- A turntable is worth building — repeatable motion beats freehand rotation
+- Log everything during calibration runs; you'll want to replay them

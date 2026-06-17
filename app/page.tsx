@@ -1,65 +1,93 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import HeroGrid from "@/components/HeroGrid";
+import FadeIn from "@/components/FadeIn";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <section className="relative flex min-h-[85vh] items-center overflow-hidden">
+        <HeroGrid />
+
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6">
+          <FadeIn>
+            <p className="text-xs tracking-[0.2em] text-muted uppercase">
+              Portfolio
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <h1 className="mt-4 font-serif text-5xl leading-[1.1] tracking-tight text-foreground md:text-7xl">
+              Mohammed Zayed
+            </h1>
+          </FadeIn>
+
+          <FadeIn delay={0.2}>
+            <p className="mt-4 text-lg tracking-wide text-muted md:text-xl">
+              Mechanical Engineering · Robotics
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.3}>
+            <p className="mt-6 max-w-md text-sm leading-relaxed text-muted md:text-base">
+              I build mechanical systems and robots that solve problems.
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.4}>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link
+                href="/projects"
+                className="group inline-flex items-center gap-2 border border-foreground px-5 py-2.5 text-sm tracking-wide text-foreground transition-all duration-300 hover:bg-foreground hover:text-background"
+              >
+                View Projects
+                <ArrowRight
+                  size={14}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5"
+                />
+              </Link>
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-2 border border-border px-5 py-2.5 text-sm tracking-wide text-muted transition-all duration-300 hover:border-foreground/20 hover:text-foreground"
+              >
+                Read Blog
+              </Link>
+            </div>
+          </FadeIn>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="border-t border-border">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-px bg-border md:grid-cols-3">
+          {[
+            {
+              label: "Discipline",
+              value: "Mechanical Engineering",
+              sub: "Queen's University · Expected 2028",
+            },
+            {
+              label: "Focus",
+              value: "Mechanics · Electronics · Software",
+              sub: "Integrated robotic systems",
+            },
+            {
+              label: "Currently",
+              value: "8DOF ESP32 Bipedal Robot",
+              sub: "Building in progress",
+            },
+          ].map((item) => (
+            <div key={item.label} className="bg-background px-6 py-8">
+              <p className="text-xs tracking-[0.15em] text-muted uppercase">
+                {item.label}
+              </p>
+              <p className="mt-2 font-serif text-lg text-foreground">
+                {item.value}
+              </p>
+              <p className="mt-1 text-sm text-muted">{item.sub}</p>
+            </div>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+    </>
   );
 }
