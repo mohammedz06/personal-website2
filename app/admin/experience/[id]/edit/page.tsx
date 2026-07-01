@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { getExperienceByIdAdmin } from "@/lib/experience";
 import ExperienceEditForm from "@/components/admin/ExperienceEditForm";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ saved?: string }>;

@@ -4,6 +4,8 @@ import { getAllProjectsAdmin } from "@/lib/projects";
 import { reorderProjects } from "@/lib/actions/projects";
 import ReorderList from "@/components/admin/ReorderList";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminProjectsPage() {
   const projects = await getAllProjectsAdmin();
 

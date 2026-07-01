@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { Upload, Loader2 } from "lucide-react";
 
 interface ImageUploadFieldProps {
@@ -62,7 +61,7 @@ export default function ImageUploadField({
       <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-start">
         {value && (
           <div className="relative h-24 w-40 shrink-0 overflow-hidden border border-border bg-[#f5f4ea]">
-            <Image src={value} alt="Preview" fill className="object-cover p-3" />
+            <img src={value} alt="Preview" className="h-full w-full object-cover p-3" />
           </div>
         )}
 

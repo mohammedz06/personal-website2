@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { createClient } from "@supabase/supabase-js";
 import { requireAuth } from "@/lib/auth/session";
 
 const ALLOWED_TYPES = new Set([
@@ -40,10 +41,41 @@ export async function POST(request: Request) {
 
     const ext = path.extname(file.name) || ".png";
     const safeName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const storageBucket = process.env.SUPABASE_STORAGE_BUCKET ?? "uploads";
+
+    if (supabaseUrl && supabaseServiceRole) {
+      const supabase = createClient(supabaseUrl, supabaseServiceRole, {
+        auth: { persistSession: false },
+      });
+
+      const { error: uploadError } = await supabase.storage
+        .from(storageBucket)
+        .upload(safeName, buffer, {
+          contentType: file.type,
+          upsert: false,
+        });
+
+      if (uploadError) {
+        throw new Error(`Upload failed: ${uploadError.message}`);
+      }
+
+      const publicUrlData = await supabase.storage
+        .from(storageBucket)
+        .getPublicUrl(safeName);
+
+      if (!publicUrlData?.data?.publicUrl) {
+        throw new Error("Could not create public URL for the uploaded file.");
+      }
+
+      return NextResponse.json({ url: publicUrlData.data.publicUrl });
+    }
+
     const uploadDir = path.join(process.cwd(), "public", "uploads");
     await mkdir(uploadDir, { recursive: true });
-
-    const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(path.join(uploadDir, safeName), buffer);
 
     return NextResponse.json({ url: `/uploads/${safeName}` });
@@ -52,7 +84,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
     }
     return NextResponse.json(
-      { error: "Upload failed. Please try again." },
+      { error: error instanceof Error ? error.message : "Upload failed. Please try again." },
       { status: 500 }
     );
   }

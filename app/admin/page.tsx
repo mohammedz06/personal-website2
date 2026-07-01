@@ -4,6 +4,8 @@ import { getAllPostsAdmin } from "@/lib/blog";
 import { getAllProjectsAdmin } from "@/lib/projects";
 import { getAllExperienceAdmin } from "@/lib/experience";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
   const [posts, projects, experience] = await Promise.all([
     getAllPostsAdmin(),

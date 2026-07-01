@@ -5,6 +5,8 @@ import { reorderBlogPosts } from "@/lib/actions/blog";
 import ReorderList from "@/components/admin/ReorderList";
 import { formatDate } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminBlogsPage() {
   const posts = await getAllPostsAdmin();
 

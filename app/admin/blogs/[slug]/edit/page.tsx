@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { getPostBySlugAdmin } from "@/lib/blog";
 import BlogEditForm from "@/components/admin/BlogEditForm";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ saved?: string }>;

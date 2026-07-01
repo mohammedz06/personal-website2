@@ -4,6 +4,8 @@ import { getAllExperienceAdmin } from "@/lib/experience";
 import { reorderExperienceItems } from "@/lib/actions/experience";
 import ReorderList from "@/components/admin/ReorderList";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminExperiencePage() {
   const experience = await getAllExperienceAdmin();
 
