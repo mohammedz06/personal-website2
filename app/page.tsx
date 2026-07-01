@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import HeroGrid from "@/components/HeroGrid";
 import FadeIn from "@/components/FadeIn";
+import SplineEmbed from "@/components/SplineEmbed";
 
 export default function HomePage() {
   return (
@@ -9,12 +10,13 @@ export default function HomePage() {
       <section className="relative flex min-h-[85vh] items-center overflow-hidden">
         <HeroGrid />
 
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-6">
-          <FadeIn>
-            <p className="text-xs tracking-[0.2em] text-muted uppercase">
-              Portfolio
-            </p>
-          </FadeIn>
+        <div className="relative z-10 mx-auto grid w-full max-w-5xl gap-16 px-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+          <div className="lg:pr-10">
+            <FadeIn>
+              <p className="text-xs tracking-[0.2em] text-muted uppercase">
+                Portfolio
+              </p>
+            </FadeIn>
 
           <FadeIn delay={0.1}>
             <h1 className="mt-4 font-serif text-5xl leading-[1.1] tracking-tight text-foreground md:text-7xl">
@@ -54,6 +56,11 @@ export default function HomePage() {
               </Link>
             </div>
           </FadeIn>
+          </div>
+
+          <div className="hidden h-[560px] min-h-[420px] w-full lg:block">
+            <SplineEmbed />
+          </div>
         </div>
       </section>
 
