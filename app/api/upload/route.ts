@@ -74,6 +74,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ url: publicUrlData.data.publicUrl });
     }
 
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json(
+        {
+          error:
+            "Image uploads require Supabase storage in production. Please configure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
+        },
+        { status: 500 }
+      );
+    }
+
     const uploadDir = path.join(process.cwd(), "public", "uploads");
     await mkdir(uploadDir, { recursive: true });
     await writeFile(path.join(uploadDir, safeName), buffer);
