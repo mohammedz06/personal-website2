@@ -1,36 +1,49 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import Script from "next/script";
+import { useEffect, useRef, useState } from "react";
 
 export default function SplineEmbed() {
   const viewerRef = useRef<HTMLDivElement>(null);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   useEffect(() => {
-    if (!viewerRef.current) return;
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/@splinetool/viewer@1.12.98/build/spline-viewer.js";
+    script.async = true;
+    script.type = "module";
+    script.onload = () => setScriptLoaded(true);
+    script.onerror = () => setScriptLoaded(false);
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!scriptLoaded || !viewerRef.current) return;
 
     const viewer = document.createElement("spline-viewer");
     viewer.setAttribute(
       "url",
       "https://prod.spline.design/0odDNTFsh2lDcmOg/scene.splinecode"
     );
-    viewer.setAttribute("class", "h-full w-full");
+    viewer.style.width = "100%";
+    viewer.style.height = "100%";
+    viewer.style.display = "block";
+
     viewerRef.current.appendChild(viewer);
 
     return () => {
-      viewerRef.current?.removeChild(viewer);
+      if (viewerRef.current?.contains(viewer)) {
+        viewerRef.current.removeChild(viewer);
+      }
     };
-  }, []);
+  }, [scriptLoaded]);
 
   return (
-    <>
-      <Script
-        src="https://unpkg.com/@splinetool/viewer@1.12.98/build/spline-viewer.js"
-        strategy="afterInteractive"
-      />
-      <div className="relative h-full w-full overflow-hidden rounded-[2rem] border border-border bg-[#f6f3e8] shadow-[0_24px_60px_-40px_rgba(0,0,0,0.45)]">
-        <div ref={viewerRef} className="h-full w-full" />
-      </div>
-    </>
+    <div className="relative h-full w-full">
+      <div ref={viewerRef} className="h-full w-full" />
+    </div>
   );
 }
