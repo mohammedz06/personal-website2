@@ -28,7 +28,17 @@ export default async function ProjectDetailPage({ params }: Props) {
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
-  const paragraphs = project.content.split("\n\n");
+  function splitParagraphs(text: string) {
+    return text
+      .replace(/\r\n/g, "\n")
+      .trim()
+      .split(/\n\s*\n+/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean);
+  }
+
+  const descriptionParagraphs = splitParagraphs(project.description);
+  const paragraphs = splitParagraphs(project.content);
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16 md:py-24">
@@ -63,7 +73,7 @@ export default async function ProjectDetailPage({ params }: Props) {
 
       <FadeIn delay={0.2}>
         <div className="mt-4 space-y-4 text-base leading-relaxed text-muted">
-          {project.description.split("\n\n").map((paragraph) => (
+          {descriptionParagraphs.map((paragraph) => (
             <p key={paragraph.slice(0, 40)}>{paragraph}</p>
           ))}
         </div>
