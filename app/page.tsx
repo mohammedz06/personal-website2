@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import HeroGrid from "@/components/HeroGrid";
 import FadeIn from "@/components/FadeIn";
-import SplineEmbed from "@/components/SplineEmbed";
 
 export default function HomePage() {
   return (
@@ -56,10 +55,6 @@ export default function HomePage() {
               </Link>
             </div>
           </FadeIn>
-          </div>
-
-          <div className="hidden h-[560px] min-h-[420px] w-full lg:block">
-            <SplineEmbed />
           </div>
         </div>
       </section>
