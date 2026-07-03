@@ -66,7 +66,7 @@ export default function ProjectEditForm({
       <form action={handleSubmit} className="mt-8 space-y-6">
         <Field label="Title" name="title" required defaultValue={project.title} />
         <Field label="Slug" name="slug" required defaultValue={project.slug} />
-        <Field label="Description" name="description" required defaultValue={project.description} />
+        <TextArea label="Description" name="description" required rows={4} defaultValue={project.description} hint="Use blank lines to create paragraph breaks." />
         <TagSelect selected={project.tags} />
         <ImageUploadField value={image} onChange={setImage} />
         <TextArea label="Content" name="content" required rows={12} defaultValue={project.content} />

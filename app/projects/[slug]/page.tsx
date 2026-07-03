@@ -62,9 +62,11 @@ export default async function ProjectDetailPage({ params }: Props) {
       </FadeIn>
 
       <FadeIn delay={0.2}>
-        <p className="mt-4 text-base leading-relaxed text-muted">
-          {project.description}
-        </p>
+        <div className="mt-4 space-y-4 text-base leading-relaxed text-muted">
+          {project.description.split("\n\n").map((paragraph) => (
+            <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+          ))}
+        </div>
       </FadeIn>
 
       <FadeIn delay={0.25}>

@@ -37,7 +37,7 @@ export default function NewProjectPage() {
       <form action={handleSubmit} className="mt-10 space-y-6">
         <Field label="Title" name="title" required />
         <Field label="Slug" name="slug" placeholder="auto-generated from title if empty" />
-        <Field label="Description" name="description" required />
+        <TextArea label="Description" name="description" required rows={4} hint="Use blank lines to create paragraph breaks." />
         <TagSelect />
         <ImageUploadField value={image} onChange={setImage} />
         <TextArea label="Content" name="content" required rows={12} hint="Separate paragraphs with a blank line." />
